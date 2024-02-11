@@ -1,3 +1,3 @@
-From ngnix
-COPY index.html /usr/share/ngnix/html
+From nginx
+COPY index.html /usr/share/nginx/html
 EXPOSE 80
