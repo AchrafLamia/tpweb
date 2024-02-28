@@ -20,7 +20,6 @@ pipeline {
 
         stage('Test image') {
             steps {
-                // Add test steps here
                 script {
                     // Your test commands go here
                     echo 'Testing the Docker image...'
@@ -38,6 +37,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Image') {
+            steps {
+                script {
+                    // Your deployment commands go here
+                    echo 'Deploying the Docker image to Docker Engine...'
+                    docker.withServer('tcp://localhost:2376', 'docker') {
+                        docker.image('achraf60/dockervf').push()
+                    }
+                }
+            }
+        }
     }
 
     post {
@@ -46,4 +57,3 @@ pipeline {
         }
     }
 }
-
