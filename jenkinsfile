@@ -10,11 +10,13 @@ pipeline {
             }
         }
 
-      stage('Deploy image') {
-steps{
-bat "docker run -d $registry:$BUILD_NUMBER"
-}
-}
+        stage('Building image') {
+            steps {
+                script {
+                    docker.build 'achraf60/dockervf'
+                }
+            }
+        }
 
         stage('Test image') {
             steps {
@@ -36,17 +38,11 @@ bat "docker run -d $registry:$BUILD_NUMBER"
             }
         }
 
-        stage('Deploy Image') {
-            steps {
-                script {
-                    // Your deployment commands go here
-                    echo 'Deploying the Docker image to Docker Engine...'
-                    docker.withServer('tcp://localhost:2376', 'docker') {
-                        docker.image('achraf60/dockervf').push()
-                    }
-                }
-            }
-        }
+        stage('Deploy image') {
+steps{
+bat "docker run -d $registry:$BUILD_NUMBER"
+}
+}
     }
 
     post {
