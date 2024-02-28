@@ -38,11 +38,18 @@ pipeline {
             }
         }
 
-        stage('Deploy image') {
-steps{
-bat "docker run -d $registry:$BUILD_NUMBER"
+        stage('Deploy Image') {
+    steps {
+        script {
+            echo 'Deploying the Docker image...'
+            docker.withRegistry("${registry}", "${registryCredential}") {
+                // Ajoutez ici les étapes de déploiement vers Docker Engine
+                docker.image('achraf60/dockervf').push()
+            }
+        }
+    }
 }
-}
+
     }
 
     post {
