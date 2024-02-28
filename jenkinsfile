@@ -1,4 +1,3 @@
-def registry = 'https://registry.hub.docker.com'
 // Jenkinsfile
 
 pipeline {
@@ -40,17 +39,16 @@ pipeline {
         }
 
         stage('Deploy Image') {
-    steps {
-        script {
-            echo 'Deploying the Docker image...'
-            docker.withRegistry("${registry}", "${registryCredential}") {
-                // Ajoutez ici les étapes de déploiement vers Docker Engine
-                docker.image('achraf60/dockervf').push()
+            steps {
+                script {
+                    // Your deployment commands go here
+                    echo 'Deploying the Docker image to Docker Engine...'
+                    docker.withServer('tcp://LOCALHOST:2376', 'dockerengine') {
+                        docker.image('achraf60/dockervf').push()
+                    }
+                }
             }
         }
-    }
-}
-
     }
 
     post {
