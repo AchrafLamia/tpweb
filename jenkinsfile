@@ -1,0 +1,49 @@
+// Jenkinsfile
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Cloning Git') {
+            steps {
+                git 'https://github.com/AchrafLamia/tpweb'
+            }
+        }
+
+        stage('Building image') {
+            steps {
+                script {
+                    docker.build 'achraf60/dockervf'
+                }
+            }
+        }
+
+        stage('Test image') {
+            steps {
+                // Add test steps here
+                script {
+                    // Your test commands go here
+                    echo 'Testing the Docker image...'
+                }
+            }
+        }
+
+        stage('Publish Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                        def customImage = docker.build('achraf60/dockervf')
+                        customImage.push()
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed!'
+        }
+    }
+}
+
