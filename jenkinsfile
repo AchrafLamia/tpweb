@@ -43,9 +43,7 @@ pipeline {
                 script {
                     // Your deployment commands go here
                     echo 'Deploying the Docker image to Docker Engine...'
-                    docker.withServer('tcp://LOCALHOST:2376', 'dockerengine') {
-                        docker.image('achraf60/dockervf').push()
-                    }
+                   
                 }
             }
         }
